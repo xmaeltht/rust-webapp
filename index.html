@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mael Tax Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<!-- <body>
+    <h1>Mael Tax Calculator</h1>
+        <label for="incomeInput">Enter your income:</label>
+        <input type="number" id="incomeInput" name="Income Tax" min="0" required>
+        <button type="button" onclick="calculateTax()">Calculate Tax</button>
+    <p id="result"></p>
+    <script type="module" src="tax.js"></script>
+</body> -->
+<body>
+    <!-- Main heading of the page -->
+    <h1>MelKloud Tax Calculator</h1>
+    <!-- Label and input for the income value -->
+    <label for="income">Enter Income HERE: </label>
+    <input type="number" id="income" name="income" min="0">
+    <!-- Button to trigger tax calculation -->
+    <button id="calculateButton">Calculate Tax</button>
+    <!-- Paragraph to display the result -->
+    <p id="result"></p>
+    <script type="module">
+        // Importing the WebAssembly module and the calculate_tax function
+        import init, { calculate_tax } from "./pkg/rust_webass.js";
+
+        // Function to initialize the WebAssembly module
+        async function run() {
+            await init(); // Wait for the module to be initialized
+
+            // Function to calculate tax when the button is clicked
+            function calculateTax() {
+                const income = parseFloat(document.getElementById("income").value); // Get the income value from the input field
+                const tax = calculate_tax(income); // Call the calculate_tax function from the WebAssembly module
+                document.getElementById("result").innerText = `Tax: $${tax.toFixed(2)}`; // Display the result
+            }
+
+            // Attach the calculateTax function to the button's click event
+            document.getElementById("calculateButton").addEventListener("click", calculateTax);
+        }
+
+        // Run the initialization function
+        run();
+    </script>
+</body>
+</html>
